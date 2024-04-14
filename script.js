@@ -1,5 +1,9 @@
 // CREATE function getComputerChoice with no arguments
+function getComputerChoice() {
   // RETURN randomly 'rock', 'paper' or 'scissors'
+  moves = ['rock', 'paper', 'scissors']
+  return moves[Math.floor(Math.random()*moves.length)]
+}
 // CREATE function playRound with arguments playerSelection and computerSelection
   // IF playerSelection is equal to computerSelection
     // RETURN text saying the result is a draw
