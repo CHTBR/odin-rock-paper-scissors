@@ -5,12 +5,20 @@ function getComputerChoice() {
   return moves[Math.floor(Math.random()*moves.length)]
 }
 // CREATE function playRound with arguments playerSelection and computerSelection
-  // IF playerSelection is equal to computerSelection
+function playRound(playerSelection, computerSelection) {
+  if (playerSelection === computerSelection) { // IF playerSelection is equal to computerSelection
     // RETURN text saying the result is a draw
-  // IF playerSelection beats computerSelection
+    return `A draw. Both you and the computer played ${playerSelection}.`
+  } else if ((playerSelection === 'rock' && computerSelection === 'scissors') // IF playerSelection beats computerSelection
+            || (playerSelection === 'paper' && computerSelection === 'rock')
+            || (playerSelection === 'scissors' && computerSelection === 'paper')) {
     // RETURN text saying player won and what beat what in this case
-  // IF computerSelection beats playerSelection
+    return `You won. After all, ${playerSelection} beats ${computerSelection}.`
+  } else { // IF computerSelection beats playerSelection
       // RETURN text saying player lost this round and what beats what in this case
+      return `You lost. Sadly ${playerSelection} is beaten by ${computerSelection}.`
+  }
+} 
 // CREATE function playGame with no arguments
   // INSTANTIATE variable playerScore of type integer with the value of 0
   // INSTANTIATE variable computerScore of type integer with the value of 0
