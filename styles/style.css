@@ -59,6 +59,11 @@ body {
     width: 27%;
 }
 
+/* Move Comparison Placement */
+#display.comparison {
+    justify-content: space-around;
+}
+
 /* Text */
 h1 {
     font-size: 75px;
