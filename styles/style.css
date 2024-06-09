@@ -1,0 +1,67 @@
+:root {
+    --light-blue: #C5FFFD;
+    --blue: #3F84E5;
+    --light-green: #8ef39a;
+    --green: #3BC14A;
+    --dark-green: #2A7F62;
+}
+
+/* General */
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+/* Background */
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: inherit;
+    height: inherit;
+    background-color: var(--blue);
+}
+
+#display {
+    background-color: var(--light-blue);
+    border-radius: 50px;
+    height: 75%;
+    width: 90%;
+}
+
+/* Placement */
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Text */
+h1 {
+    font-size: 75px;
+    font-weight: 1000;
+}
+
+/* Buttons */
+button {
+    font-size: 90px;
+    background-color: var(--green);
+    border: .15em solid var(--dark-green);
+    padding: .25em .5em;
+    border-radius: 1em;
+}
+
+button:active {
+    background-color: var(--light-green);
+    border-color: var(--green);
+}
