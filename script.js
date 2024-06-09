@@ -1,3 +1,55 @@
+const rockImage = {
+  src: "img/rock.png",
+  alt: "An image of a grey circle representing rock."
+}
+const paperImage = {
+  src: "img/paper.png",
+  alt: "An image of a white square representing paper."
+}
+const scissorsImage = {
+  src: "img/scissors.png",
+  alt: "An image of a red triangle representing scissors."
+}
+
+const display = document.querySelector("#display");
+const startButton = document.querySelector("#start-button");
+
+startButton.addEventListener("click", () => {
+  display.removeChild(startButton);
+  display.classList.add("choice");
+  createMoveChoiceMenu();
+});
+
+function createMoveChoiceMenu() {
+  const images = [rockImage, paperImage, scissorsImage]
+  const buttonTextsAndIds = ["Rock", "Paper", "Scissors"]
+  for (let i = 0; i < 3; i++) {
+    const container = document.createElement("div");
+    container.classList.add("vertical-container");
+    display.appendChild(container);
+    const image = returnImageElement(images[i]["src"], images[i]["alt"]);
+    container.appendChild(image);
+    const button = returnButtonElement(buttonTextsAndIds[i], "choice", buttonTextsAndIds[i].toLowerCase());
+    container.appendChild(button);
+  }
+}
+
+function returnButtonElement(textContent, className, idName) {
+  const button = document.createElement("button");
+  button.textContent = textContent;
+  button.classList.add(className);
+  button.setAttribute("id", idName);
+  return button;
+}
+
+function returnImageElement(src, altText) {
+  const image = document.createElement("img");
+  image.setAttribute("src", src);
+  image.setAttribute("alt", altText);
+  return image;
+}
+
+/*
 function getComputerChoice() {
   moves = ['rock', 'paper', 'scissors'];
   return moves[Math.floor(Math.random()*moves.length)];
@@ -41,5 +93,4 @@ function playGame() {
   } else {
     console.log('You have lost.');
   } } }
-
-playGame();
+*/

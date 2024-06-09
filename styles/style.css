@@ -85,7 +85,7 @@ button:active {
 }
 
 /* Move Choice Buttons */
-button {
+button.choice {
     width: 100%;
 }
 
