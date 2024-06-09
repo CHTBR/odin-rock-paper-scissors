@@ -94,3 +94,9 @@ p.result {
     font-size: 700px;
     font-weight: 1000;
 }
+
+/* Game End Text */
+p.game-end {
+    font-size: 300px;
+    font-weight: 1000;
+}
