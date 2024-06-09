@@ -88,3 +88,9 @@ button:active {
 button {
     width: 100%;
 }
+
+/* Round Result Text */
+p.result {
+    font-size: 700px;
+    font-weight: 1000;
+}
