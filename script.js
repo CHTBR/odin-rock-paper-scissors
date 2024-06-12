@@ -1,37 +1,66 @@
-const rockImage = {
-  src: "img/rock.png",
-  alt: "An image of a grey circle representing rock."
+function imgObject(id, src, alt) {
+  obj = {};
+  obj.id = id;
+  obj.src = src;
+  obj.alt = alt;
+  obj.returnImageElement = function () {
+    img = document.createElement("img");
+    img.setAttribute("src", this.src);
+    img.setAttribute("alt", this.alt);
+    return img;
+  };
+  return obj;
 }
-const paperImage = {
-  src: "img/paper.png",
-  alt: "An image of a white square representing paper."
-}
-const scissorsImage = {
-  src: "img/scissors.png",
-  alt: "An image of a red triangle representing scissors."
-}
+
+const moveList = [
+  new imgObject("rock", "img/rock.png", "An image of a grey circle representing rock."),
+  new imgObject("paper", "img/paper.png", "An image of a white square representing paper."),
+  new imgObject("scissors", "img/scissors.png", "An image of a red triangle representing scissors.")
+]
 
 const display = document.querySelector("#display");
 const startButton = document.querySelector("#start-button");
 
-startButton.addEventListener("click", () => {
+let playerMove;
+let computerMove;
+
+startButton.addEventListener("click", event => {
+  event.stopPropagation()
   display.removeChild(startButton);
   display.classList.add("choice");
   createMoveChoiceMenu();
 });
 
 function createMoveChoiceMenu() {
-  const images = [rockImage, paperImage, scissorsImage]
-  const buttonTextsAndIds = ["Rock", "Paper", "Scissors"]
   for (let i = 0; i < 3; i++) {
     const container = document.createElement("div");
     container.classList.add("vertical-container");
     display.appendChild(container);
-    const image = returnImageElement(images[i]["src"], images[i]["alt"]);
+    const image = moveList[i].returnImageElement();
     container.appendChild(image);
-    const button = returnButtonElement(buttonTextsAndIds[i], "choice", buttonTextsAndIds[i].toLowerCase());
+    const button = returnButtonElement(moveList[i]["id"][0].toUpperCase()+moveList[i]["id"].slice(1), "choice", moveList[i]["id"]);
     container.appendChild(button);
   }
+  display.addEventListener("click", function click(event) {
+    if (event.target.type === 'submit') {
+      display.classList.remove("choice")
+      playerMove = event.target.id;
+      display.removeEventListener("click", click);
+      while (display.firstChild) {
+        display.firstChild.remove();
+      }
+      createComparisonMenu();
+    }
+  })
+}
+
+function createComparisonMenu() {
+  display.classList.add("comparison")
+  let playerImg = moveList.find((obj) => obj["id"] === playerMove).returnImageElement();
+  display.appendChild(playerImg)
+  computerMove = returnComputerMove()
+  let computerImg = moveList.find((obj) => obj["id"] === computerMove).returnImageElement();
+  display.appendChild(computerImg)
 }
 
 function returnButtonElement(textContent, className, idName) {
@@ -42,19 +71,12 @@ function returnButtonElement(textContent, className, idName) {
   return button;
 }
 
-function returnImageElement(src, altText) {
-  const image = document.createElement("img");
-  image.setAttribute("src", src);
-  image.setAttribute("alt", altText);
-  return image;
+function returnComputerMove() {
+  let moveList = ['rock', 'paper', 'scissors'];
+  return moveList[Math.floor(Math.random()*moveList.length)];
 }
 
 /*
-function getComputerChoice() {
-  moves = ['rock', 'paper', 'scissors'];
-  return moves[Math.floor(Math.random()*moves.length)];
-}
-
 function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
     return `A draw. Both you and the computer played ${playerSelection}.`;
