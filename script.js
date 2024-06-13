@@ -22,10 +22,14 @@ const display = document.querySelector("#display");
 const startButton = document.querySelector("#start-button");
 
 let playerMove;
+let playerScore;
 let computerMove;
+let computerScore;
 
 startButton.addEventListener("click", event => {
   event.stopPropagation()
+  playerScore = 0;
+  computerScore = 0;
   display.removeChild(startButton);
   display.classList.add("choice");
   createMoveChoiceMenu();
@@ -44,7 +48,7 @@ function createMoveChoiceMenu() {
   display.addEventListener("click", function click(event) {
     if (event.target.type === 'submit') {
       display.classList.remove("choice")
-      playerMove = event.target.id;
+      playerMove = moveList.find(move => move["id"] === event.target.id);
       display.removeEventListener("click", click);
       while (display.firstChild) {
         display.firstChild.remove();
@@ -56,7 +60,7 @@ function createMoveChoiceMenu() {
 
 function createComparisonMenu() {
   display.classList.add("comparison")
-  let playerImg = moveList.find((obj) => obj["id"] === playerMove).returnImageElement();
+  let playerImg = playerMove.returnImageElement();
   display.appendChild(playerImg);
   computerMove = returnRandomMove();
   let computerImg = returnRandomMove().returnImageElement();
@@ -66,6 +70,7 @@ function createComparisonMenu() {
 
 function computerMoveRevealSequence(computerMove, computerImage, waitTime, listIndex) {
   if (waitTime >= 600 && moveList[listIndex]["id"] === computerMove["id"]) {
+    setTimeout(createScoreMenu, 3000);
     return;
   }
   waitTime += Math.floor(Math.random() * 75);
@@ -75,6 +80,31 @@ function computerMoveRevealSequence(computerMove, computerImage, waitTime, listI
   }
   computerImage.setAttribute("src", moveList[listIndex]["src"]);
   setTimeout(computerMoveRevealSequence, waitTime, computerMove, computerImage, waitTime, listIndex);
+}
+
+function createScoreMenu() {
+  display.classList.remove("comparison");
+  display.classList.add("result");
+  while (display.firstChild) {
+    display.firstChild.remove();
+  }
+  evaluateRoundWinner()
+  let scoreText = document.createElement("p");
+  scoreText.classList.add("result")
+  scoreText.textContent = String(playerScore) + "  :  " + String(computerScore);
+  display.appendChild(scoreText);
+}
+
+function evaluateRoundWinner() {
+  if ((playerMove["id"] === 'rock' && computerMove["id"] === 'scissors')
+            || (playerMove["id"] === 'paper' && computerMove["id"] === 'rock')
+            || (playerMove["id"] === 'scissors' && computerMove["id"] === 'paper')) {
+    playerScore += 1;
+  } else if (playerMove["id"] === computerMove["id"]) {
+    return;
+  } else {
+      computerScore += 1;
+  }
 }
 
 function returnButtonElement(textContent, className, idName) {
