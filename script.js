@@ -36,6 +36,9 @@ startButton.addEventListener("click", event => {
 });
 
 function createMoveChoiceMenu() {
+  while (display.firstChild) {
+    display.firstChild.remove();
+  }
   for (let i = 0; i < 3; i++) {
     const container = document.createElement("div");
     container.classList.add("vertical-container");
@@ -70,7 +73,7 @@ function createComparisonMenu() {
 
 function computerMoveRevealSequence(computerMove, computerImage, waitTime, listIndex) {
   if (waitTime >= 600 && moveList[listIndex]["id"] === computerMove["id"]) {
-    setTimeout(createScoreMenu, 3000);
+    setTimeout(createScoreMenu, 2000);
     return;
   }
   waitTime += Math.floor(Math.random() * 75);
@@ -100,11 +103,14 @@ function evaluateRoundWinner() {
             || (playerMove["id"] === 'paper' && computerMove["id"] === 'rock')
             || (playerMove["id"] === 'scissors' && computerMove["id"] === 'paper')) {
     playerScore += 1;
-  } else if (playerMove["id"] === computerMove["id"]) {
-    return;
-  } else {
-      computerScore += 1;
+  } else if (playerMove["id"] != computerMove["id"]) {
+    computerScore += 1;
   }
+  setTimeout(() => {
+    display.classList.remove("result");
+    display.classList.add("choice");
+    createMoveChoiceMenu();
+  }, 3000)
 }
 
 function returnButtonElement(textContent, className, idName) {
@@ -120,6 +126,26 @@ function returnRandomMove() {
 }
 
 /*
+  if (playerScore === 5) {
+    setTimeout(createGameEndMenu, 6000, "YOU WON");
+  }
+  if (computerScore === 5) {
+    setTimeout(createGameEndMenu, 6000, "YOU LOST");
+  }
+
+function createGameEndMenu(resultText) {
+  display.classList.remove("result");
+  display.classList.add("game-end");
+  while (display.firstChild) {
+    display.firstChild.remove();
+  }
+  let endText = document.createElement("p");
+  endText.classList.add("game-end");
+  endText.textContent = resultText;
+  display.appendChild(endText);
+}
+
+
 function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
     return `A draw. Both you and the computer played ${playerSelection}.`;
