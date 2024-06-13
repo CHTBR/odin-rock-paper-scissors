@@ -19,26 +19,31 @@ const moveList = [
 ]
 
 const display = document.querySelector("#display");
-const startButton = document.querySelector("#start-button");
 
 let playerMove;
 let playerScore;
 let computerMove;
 let computerScore;
 
-startButton.addEventListener("click", event => {
-  event.stopPropagation()
-  playerScore = 0;
-  computerScore = 0;
-  display.removeChild(startButton);
-  display.classList.add("choice");
-  createMoveChoiceMenu();
-});
+createStartMenu();
+
+function createStartMenu() {
+  const startButton = document.createElement("button");
+  startButton.textContent = "START";
+  startButton.setAttribute("id", "#start-button");
+  display.appendChild(startButton);
+  startButton.addEventListener("click", event => {
+    event.stopPropagation();
+    playerScore = 0;
+    computerScore = 0;
+    display.removeChild(startButton);
+    display.classList.add("choice");
+    createMoveChoiceMenu();
+  });
+}
 
 function createMoveChoiceMenu() {
-  while (display.firstChild) {
-    display.firstChild.remove();
-  }
+  removeElemnetsFromDisplay();
   for (let i = 0; i < 3; i++) {
     const container = document.createElement("div");
     container.classList.add("vertical-container");
@@ -53,16 +58,14 @@ function createMoveChoiceMenu() {
       display.classList.remove("choice")
       playerMove = moveList.find(move => move["id"] === event.target.id);
       display.removeEventListener("click", click);
-      while (display.firstChild) {
-        display.firstChild.remove();
-      }
+      removeElemnetsFromDisplay();
       createComparisonMenu();
     }
   })
 }
 
 function createComparisonMenu() {
-  display.classList.add("comparison")
+  display.classList.add("comparison");
   let playerImg = playerMove.returnImageElement();
   display.appendChild(playerImg);
   computerMove = returnRandomMove();
@@ -88,9 +91,7 @@ function computerMoveRevealSequence(computerMove, computerImage, waitTime, listI
 function createScoreMenu() {
   display.classList.remove("comparison");
   display.classList.add("result");
-  while (display.firstChild) {
-    display.firstChild.remove();
-  }
+  removeElemnetsFromDisplay();
   evaluateRoundWinner()
   let scoreText = document.createElement("p");
   scoreText.classList.add("result")
@@ -106,11 +107,17 @@ function evaluateRoundWinner() {
   } else if (playerMove["id"] != computerMove["id"]) {
     computerScore += 1;
   }
-  setTimeout(() => {
-    display.classList.remove("result");
-    display.classList.add("choice");
-    createMoveChoiceMenu();
-  }, 3000)
+  if (playerScore === 5) {
+    setTimeout(createGameEndMenu, 3000, "YOU WON");
+  } else if (computerScore === 5) {
+    setTimeout(createGameEndMenu, 3000, "YOU LOST");
+  } else {
+    setTimeout(() => {
+      display.classList.remove("result");
+      display.classList.add("choice");
+      createMoveChoiceMenu();
+    }, 3000);
+  }
 }
 
 function returnButtonElement(textContent, className, idName) {
@@ -125,27 +132,27 @@ function returnRandomMove() {
   return moveList[Math.floor(Math.random()*moveList.length)];
 }
 
-/*
-  if (playerScore === 5) {
-    setTimeout(createGameEndMenu, 6000, "YOU WON");
-  }
-  if (computerScore === 5) {
-    setTimeout(createGameEndMenu, 6000, "YOU LOST");
-  }
-
 function createGameEndMenu(resultText) {
   display.classList.remove("result");
   display.classList.add("game-end");
-  while (display.firstChild) {
-    display.firstChild.remove();
-  }
+  removeElemnetsFromDisplay();
   let endText = document.createElement("p");
   endText.classList.add("game-end");
   endText.textContent = resultText;
   display.appendChild(endText);
+  setTimeout(() => {
+    removeElemnetsFromDisplay();
+    createStartMenu();
+  }, 4000);
 }
 
+function removeElemnetsFromDisplay() {
+  while (display.firstChild) {
+    display.firstChild.remove();
+  }
+}
 
+/*
 function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
     return `A draw. Both you and the computer played ${playerSelection}.`;
