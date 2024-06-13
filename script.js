@@ -57,10 +57,24 @@ function createMoveChoiceMenu() {
 function createComparisonMenu() {
   display.classList.add("comparison")
   let playerImg = moveList.find((obj) => obj["id"] === playerMove).returnImageElement();
-  display.appendChild(playerImg)
-  computerMove = returnComputerMove()
-  let computerImg = moveList.find((obj) => obj["id"] === computerMove).returnImageElement();
-  display.appendChild(computerImg)
+  display.appendChild(playerImg);
+  computerMove = returnRandomMove();
+  let computerImg = returnRandomMove().returnImageElement();
+  display.appendChild(computerImg);
+  computerMoveRevealSequence(computerMove, computerImg, 10, 0);
+}
+
+function computerMoveRevealSequence(computerMove, computerImage, waitTime, listIndex) {
+  if (waitTime >= 600 && moveList[listIndex]["id"] === computerMove["id"]) {
+    return;
+  }
+  waitTime += Math.floor(Math.random() * 75);
+  listIndex += 1;
+  if (listIndex > 2) {
+    listIndex = 0;
+  }
+  computerImage.setAttribute("src", moveList[listIndex]["src"]);
+  setTimeout(computerMoveRevealSequence, waitTime, computerMove, computerImage, waitTime, listIndex);
 }
 
 function returnButtonElement(textContent, className, idName) {
@@ -71,8 +85,7 @@ function returnButtonElement(textContent, className, idName) {
   return button;
 }
 
-function returnComputerMove() {
-  let moveList = ['rock', 'paper', 'scissors'];
+function returnRandomMove() {
   return moveList[Math.floor(Math.random()*moveList.length)];
 }
 
