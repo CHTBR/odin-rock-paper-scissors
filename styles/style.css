@@ -4,6 +4,7 @@
     --light-green: #8ef39a;
     --green: #3BC14A;
     --dark-green: #2A7F62;
+    --brown: #AF9164;
 }
 
 /* General */
@@ -32,12 +33,23 @@ body {
     width: 90%;
 }
 
+footer {
+    background-color: var(--brown);
+}
+
 /* General Placement */
 body {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+footer {
+    width: 100%;
+    height: 5%;
+    align-content: center;
+    text-align: center;
 }
 
 /* Start Menu Placement */
@@ -66,6 +78,7 @@ body {
 
 /* Text */
 h1 {
+    padding-top: 20px;
     font-size: 75px;
     font-weight: 1000;
 }
